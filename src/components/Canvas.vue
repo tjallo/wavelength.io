@@ -9,6 +9,8 @@
       <span>R: Reset Selection</span>
       <br />
       <span>Enter: Show Score</span>
+      <br />
+      <span>Left Arrow: Next round</span>
     </div>
     <h1 v-if="showScore">Score: {{ score }}</h1>
   </div>
@@ -41,7 +43,7 @@ export default {
       const PI = Math.PI;
       const arcSize = 0.9;
       const radius = windowWidth / 2 - 0.5 * windowWidth * (1 - arcSize);
-      const colWidth = 0.03;
+      const colWidth = 0.04;
       let centreOffset = -(PI * colWidth * 5) / 2;
       let pos1 = -0.5 * PI + centreOffset;
       let maxRange = [PI, PI * 2 - PI * colWidth * 5];
@@ -103,21 +105,21 @@ export default {
         }
         p5.untilClick();
 
-        twoPointerAngles[0].forEach((x) => {
-          p5.circleLine(x);
-        });
-        twoPointerAngles[1].forEach((x) => {
-          p5.circleLine(x);
-        });
-        threePointerAngles[0].forEach((x) => {
-          p5.circleLine(x);
-        });
-        threePointerAngles[1].forEach((x) => {
-          p5.circleLine(x);
-        });
-        fourPointerAngles[0].forEach((x) => {
-          p5.circleLine(x);
-        });
+        // twoPointerAngles[0].forEach((x) => {
+        //   p5.circleLine(x);
+        // });
+        // twoPointerAngles[1].forEach((x) => {
+        //   p5.circleLine(x);
+        // });
+        // threePointerAngles[0].forEach((x) => {
+        //   p5.circleLine(x);
+        // });
+        // threePointerAngles[1].forEach((x) => {
+        //   p5.circleLine(x);
+        // });
+        // fourPointerAngles[0].forEach((x) => {
+        //   p5.circleLine(x);
+        // });
 
         // console.log(
         //   p5.determinePoints(
