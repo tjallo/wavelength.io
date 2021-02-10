@@ -349,7 +349,6 @@ export default {
 
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 * {
   background-color: #404040;
@@ -359,7 +358,7 @@ export default {
 .info {
   text-align: center;
   color: white;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   letter-spacing: 0.05em;
   font-weight: bold;
 }
@@ -367,7 +366,6 @@ export default {
 #command {
   text-align: center;
   color: rgb(255, 255, 255);
-  font-family: "Roboto", sans-serif;
   letter-spacing: 0.05em;
   font-weight: bolder;
 }
@@ -375,7 +373,6 @@ export default {
 #description {
   text-align: center;
   color: rgb(253, 234, 234);
-  font-family: "Roboto", sans-serif;
   letter-spacing: 0.001em;
   font-weight: 100;
 }
