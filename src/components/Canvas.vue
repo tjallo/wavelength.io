@@ -1,6 +1,16 @@
 <template>
-  <div id="canvas">
+  <div id="canvas" class="info">
     <!-- <div> -->
+    <div class="info" style="list-style-type: none">
+      <span>Left Mouse Click: Select Guess</span>
+      <br />
+      <span>H: Toggle Showing colours</span>
+      <br />
+      <span>R: Reset Selection</span>
+      <br />
+      <span>Enter: Show Score</span>
+    </div>
+    <h1 v-if="showScore">Score: {{ score }}</h1>
   </div>
 </template>
 
@@ -10,44 +20,61 @@ import P5 from "p5"; // Package from npm
 export default {
   name: "App",
   components: {},
+  data: function () {
+    return {
+      score: 0,
+      showScore: false,
+    };
+  },
+  methods: {},
   mounted() {
     const script = (p5) => {
       let clicked = false;
       let a1 = 0;
+      let show = true;
+      let locked = false;
+
+      // eslint-disable-next-line no-unused-vars
+      let score = 0;
       const windowHeight = 1000;
       const windowWidth = 1000;
       const PI = Math.PI;
-      const arcSize = 0.75;
+      const arcSize = 0.9;
       const radius = windowWidth / 2 - 0.5 * windowWidth * (1 - arcSize);
-      const colWidth = 0.04;
-      const twoPointerAngles = [
+      const colWidth = 0.03;
+      let centreOffset = -(PI * colWidth * 5) / 2;
+      let pos1 = -0.5 * PI + centreOffset;
+      let maxRange = [PI, PI * 2 - PI * colWidth * 5];
+      // eslint-disable-next-line no-unused-vars
+      let twoPointerAngles = [
         [
-          -PI * (colWidth * -3 + colWidth / 2),
-          -PI * (colWidth * -2 + colWidth / 2),
+          -PI * (colWidth * -3 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
+          -PI * (colWidth * -2 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
         ],
         [
-          -PI * (colWidth * 1 + colWidth / 2),
-          -PI * (colWidth * 2 + colWidth / 2),
+          -PI * (colWidth * 1 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
+          -PI * (colWidth * 2 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
         ],
       ];
       // eslint-disable-next-line no-unused-vars
-      const threePointerAngles = [
+      let threePointerAngles = [
         [
-          -PI * (colWidth * -2 + colWidth / 2),
-          -PI * (colWidth * -1 + colWidth / 2),
+          -PI * (colWidth * -2 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
+          -PI * (colWidth * -1 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
         ],
         [
-          -PI * (colWidth * 0 + colWidth / 2),
-          -PI * (colWidth * 1 + colWidth / 2),
+          -PI * (colWidth * 0 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
+          -PI * (colWidth * 1 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
         ],
       ];
       // eslint-disable-next-line no-unused-vars
-      const fourPointerAngles = [
+      let fourPointerAngles = [
         [
-          -PI * (colWidth * -1 + colWidth / 2),
-          -PI * (colWidth * 0 + colWidth / 2),
+          -PI * (colWidth * -1 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
+          -PI * (colWidth * 0 + colWidth / 2) + pos1 + PI * 0.5 - centreOffset,
         ],
       ];
+
       //   const minMouseX = windowWidth * (1 - arcSize);
       //   const maxMouseX = windowWidth * arcSize;
       // eslint-disable-next-line no-unused-vars
@@ -57,7 +84,6 @@ export default {
       p5.setup = () => {
         p5.createCanvas(windowHeight, windowWidth);
         // p5.frameRate(2);
-        p5.determinePoints(40);
       };
       p5.draw = () => {
         p5.clear();
@@ -72,17 +98,39 @@ export default {
           "CHORD"
         );
 
-        // let maxRange = [PI, PI * 2 - PI * colWidth * 5];
-        let centreOffset = -(PI * colWidth * 5) / 2;
-
-        // let randNr = p5.random(maxRange[0], maxRange[1]);
-        let pos1 = -0.5 * PI + centreOffset;
-        p5.arc_range(pos1, colWidth);
+        if (show) {
+          p5.arc_range(pos1, colWidth);
+        }
         p5.untilClick();
+
+        twoPointerAngles[0].forEach((x) => {
+          p5.circleLine(x);
+        });
+        twoPointerAngles[1].forEach((x) => {
+          p5.circleLine(x);
+        });
+        threePointerAngles[0].forEach((x) => {
+          p5.circleLine(x);
+        });
+        threePointerAngles[1].forEach((x) => {
+          p5.circleLine(x);
+        });
+        fourPointerAngles[0].forEach((x) => {
+          p5.circleLine(x);
+        });
+
+        // console.log(
+        //   p5.determinePoints(
+        //     a1,
+        //     twoPointerAngles,
+        //     threePointerAngles,
+        //     fourPointerAngles
+        //   )
+        // );
       };
 
       p5.untilClick = () => {
-        if (clicked == false) {
+        if (clicked == false && locked == false) {
           p5.drawMouse();
         } else {
           p5.circleLine(a1);
@@ -90,7 +138,45 @@ export default {
       };
 
       p5.mouseClicked = () => {
-        clicked = !clicked;
+        clicked = true;
+        // console.log(twoPointerAngles[0]);
+        // console.log(a1);
+      };
+
+      p5.keyPressed = () => {
+        // console.log(p5.keyCode);
+        // r key
+        if (p5.keyCode == 82) {
+          clicked = false;
+        }
+        // h key
+        if (p5.keyCode == 72) {
+          show = !show;
+        }
+        // Enter key
+        if (p5.keyCode == 13) {
+          score = p5.determinePoints(
+            a1,
+            twoPointerAngles,
+            threePointerAngles,
+            fourPointerAngles
+          );
+          locked = true;
+          show = true;
+          this.score = score;
+          this.showScore = true;
+        }
+        // Right arrow
+        if (p5.keyCode == 39) {
+          show = false;
+          score = 0;
+          locked = false;
+          clicked = false;
+          this.showScore = false;
+          this.score = 0;
+          pos1 = p5.random(maxRange[0], maxRange[1]);
+          p5.updateAngleArrays();
+        }
       };
 
       p5.arc_range = (start, colWidth) => {
@@ -150,26 +236,86 @@ export default {
       };
 
       // eslint-disable-next-line no-unused-vars
-      p5.determinePoints = (angle) => {
-        if (p5.checkIfInbetween(twoPointerAngles, angle)) {
-          return 2;
-        } else if (p5.checkIfInbetween(threePointerAngles, angle)) {
-          return 3;
-        } else if (p5.checkIfInbetween(fourPointerAngles, angle)) {
+      p5.determinePoints = (
+        angle,
+        twoPointerAngles,
+        threePointerAngles,
+        fourPointerAngles
+      ) => {
+        if (p5.determine4Points(angle, fourPointerAngles)) {
           return 4;
+        }
+        if (p5.determine3Points(angle, threePointerAngles)) {
+          return 3;
+        }
+        if (p5.determine2Points(angle, twoPointerAngles)) {
+          return 2;
         }
         return 0;
       };
-      p5.checkIfInbetween = (angleArray, angle) => {
-        angleArray.forEach((x) => {
-          let minval = Math.min.apply(null, x);
-          let maxval = Math.max.apply(null, x);
-          if (angle > minval && angle < maxval) {
-            return true;
-          }
-        });
 
-        return false;
+      p5.determine4Points = (angle, fourPointerAngles) => {
+        let minval = Math.min.apply(null, fourPointerAngles[0]);
+        let maxval = Math.max.apply(null, fourPointerAngles[0]);
+        return angle > minval && angle < maxval;
+      };
+
+      p5.determine3Points = (angle, threePointerAngles) => {
+        let minval1 = Math.min.apply(null, threePointerAngles[0]);
+        let maxval1 = Math.max.apply(null, threePointerAngles[0]);
+        let minval2 = Math.min.apply(null, threePointerAngles[1]);
+        let maxval2 = Math.max.apply(null, threePointerAngles[1]);
+        return (
+          (angle > minval1 && angle < maxval1) ||
+          (angle > minval2 && angle < maxval2)
+        );
+      };
+      p5.determine2Points = (angle, twoPointerAngles) => {
+        let minval1 = Math.min.apply(null, twoPointerAngles[0]);
+        let maxval1 = Math.max.apply(null, twoPointerAngles[0]);
+        let minval2 = Math.min.apply(null, twoPointerAngles[1]);
+        let maxval2 = Math.max.apply(null, twoPointerAngles[1]);
+        return (
+          (angle > minval1 && angle < maxval1) ||
+          (angle > minval2 && angle < maxval2)
+        );
+      };
+
+      p5.updateAngleArrays = () => {
+        // max = -1.335176877775662
+        // let c = -0.5 * PI - centreOffset;
+        // min = 1.335176877775662
+        // let c = 0.5 * PI + centreOffset;
+        let c = -pos1 - PI * 0.5 - (5 * colWidth * PI) / 2 + 2 * PI;
+
+        twoPointerAngles = [
+          [
+            -PI * (colWidth * -3 + colWidth / 2) + c,
+            -PI * (colWidth * -2 + colWidth / 2) + c,
+          ],
+          [
+            -PI * (colWidth * 1 + colWidth / 2) + c,
+            -PI * (colWidth * 2 + colWidth / 2) + c,
+          ],
+        ];
+        // eslint-disable-next-line no-unused-vars
+        threePointerAngles = [
+          [
+            -PI * (colWidth * -2 + colWidth / 2) + c,
+            -PI * (colWidth * -1 + colWidth / 2) + c,
+          ],
+          [
+            -PI * (colWidth * 0 + colWidth / 2) + c,
+            -PI * (colWidth * 1 + colWidth / 2) + c,
+          ],
+        ];
+        // eslint-disable-next-line no-unused-vars
+        fourPointerAngles = [
+          [
+            -PI * (colWidth * -1 + colWidth / 2) + c,
+            -PI * (colWidth * 0 + colWidth / 2) + c,
+          ],
+        ];
       };
     }; // Attach the canvas to the div
 
@@ -182,5 +328,14 @@ export default {
 <style>
 * {
   background-color: purple;
+  align-self: center;
+}
+
+.info {
+  text-align: center;
+}
+
+.p5Canvas {
+  align-self: center;
 }
 </style>
