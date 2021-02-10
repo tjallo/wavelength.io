@@ -18,17 +18,15 @@ export default {
       const arcSize = 0.75;
       const radius = windowWidth / 2 - 0.5 * windowWidth * (1 - arcSize);
       const colWidth = 0.04;
-      //   const minMouseX = windowWidth * (1 - arcSize);
-      //   const maxMouseX = windowWidth * arcSize;
       // eslint-disable-next-line no-unused-vars
       const twoPointerAngles = [
         [
-          -PI * (colWidth * -2 + colWidth / 2),
           -PI * (colWidth * -3 + colWidth / 2),
+          -PI * (colWidth * -2 + colWidth / 2),
         ],
         [
-          -PI * (colWidth * 2 + colWidth / 2),
           -PI * (colWidth * 1 + colWidth / 2),
+          -PI * (colWidth * 2 + colWidth / 2),
         ],
       ];
       // eslint-disable-next-line no-unused-vars
@@ -43,12 +41,16 @@ export default {
         ],
       ];
       // eslint-disable-next-line no-unused-vars
-      const onePointerAngles = [
+      const fourPointerAngles = [
         [
-          -PI * (colWidth * 0 + colWidth / 2),
           -PI * (colWidth * -1 + colWidth / 2),
+          -PI * (colWidth * 0 + colWidth / 2),
         ],
       ];
+      //   const minMouseX = windowWidth * (1 - arcSize);
+      //   const maxMouseX = windowWidth * arcSize;
+      // eslint-disable-next-line no-unused-vars
+
       //   const HALF_PI = Math.PI * 0.5;
       // These are your typical setup() and draw() methods
       p5.setup = () => {
@@ -121,18 +123,17 @@ export default {
 
         // eslint-disable-next-line no-unused-vars
 
-        // onePointerAngles.forEach((x) => {
-        //   x.forEach((y) => {
-        //     p5.circleLine(y);
-        //   });
-        // });
-        p5.circleLine(-PI * p5.calculateAngle());
+        let a1 = p5.calculateAngle();
+        // console.log(a1)
+        p5.circleLine(a1);
+
       };
 
       // The Range is between PI * [-0.5, 0.5]
       p5.circleLine = (angle) => {
         let x = -radius * Math.sin(angle) + windowWidth / 2;
         let y = -radius * Math.cos(angle) + windowHeight / 2;
+        // console.log(angle);
 
         // console.log(x, y);
         // console.log(p5.mouseX, p5.mouseY)
@@ -143,13 +144,17 @@ export default {
       p5.calculateAngle = () => {
         let angle = p5.mouseX / windowWidth - 0.5;
         if (angle > 0.5) {
-          return 0.5;
+          return -PI * 0.5;
         } else if (angle < -0.5) {
-          return -0.5;
+          return -PI * -0.5;
         }
-        return angle;
+        return -PI * angle;
       };
+
+      // eslint-disable-next-line no-unused-vars
+     
     }; // Attach the canvas to the div
+
     // eslint-disable-next-line no-unused-vars
     const p5canvas = new P5(script, "canvas");
   },
