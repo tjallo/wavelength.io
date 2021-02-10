@@ -2,17 +2,17 @@
   <div id="canvas" class="info">
     <!-- <div> -->
     <div class="info" style="list-style-type: none">
-      <span>Left Mouse Click: Select Guess</span>
+      <span id="command">Left Mouse Click:</span> <span id="description">Select Guess</span>
       <br />
-      <span>H: Toggle Showing colours</span>
+      <span id="command">H: </span> <span id="description">Toggle Showing colours</span>
       <br />
-      <span>R: Reset Selection</span>
+      <span id="command">R: </span> <span id="description">Reset Selection</span>
       <br />
-      <span>Enter: Show Score</span>
+      <span id="command">Enter: </span> <span id="description">Show Score</span>
       <br />
-      <span>Left Arrow: Next round</span>
+      <span id="command">Left Arrow: </span> <span id="description">Next round</span>
     </div>
-    <h1 v-if="showScore">Score: {{ score }}</h1>
+    <h1 :id="showScore ? '' : 'score'">Score: {{ score }}</h1>
   </div>
 </template>
 
@@ -41,6 +41,7 @@ export default {
       const windowHeight = 1000;
       const windowWidth = 1000;
       const PI = Math.PI;
+      // Should be between [0.0, 1.0]
       const arcSize = 0.9;
       const radius = windowWidth / 2 - 0.5 * windowWidth * (1 - arcSize);
       const colWidth = 0.04;
@@ -89,7 +90,9 @@ export default {
       };
       p5.draw = () => {
         p5.clear();
-        p5.fill(255);
+        p5.fill(230);
+        p5.stroke(0);
+        p5.strokeWeight(15);
         p5.arc(
           windowHeight / 2,
           windowWidth / 2,
@@ -99,10 +102,27 @@ export default {
           0,
           "CHORD"
         );
-
+        p5.stroke(0);
         if (show) {
           p5.arc_range(pos1, colWidth);
         }
+        p5.fill(p5.color(0, 0, 0));
+        p5.line(
+          (windowWidth / 2) * (1 - arcSize),
+          windowHeight / 2 + 1,
+          0.5 * windowHeight * (arcSize + 1),
+          windowHeight / 2 + 1
+        );
+        p5.strokeWeight(1);
+        p5.arc(
+          windowHeight / 2 + 1,
+          windowWidth / 2 + 1,
+          windowWidth * arcSize * 0.05,
+          windowWidth * arcSize * 0.05,
+          PI,
+          0,
+          "CHORD"
+        );
         p5.untilClick();
 
         // twoPointerAngles[0].forEach((x) => {
@@ -327,17 +347,44 @@ export default {
 };
 </script>
 
+
 <style>
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+
 * {
-  background-color: purple;
+  background-color: #404040;
   align-self: center;
 }
 
 .info {
   text-align: center;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+}
+
+#command {
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.05em;
+  font-weight: bolder;
+}
+
+#description {
+  text-align: center;
+  color: rgb(253, 234, 234);
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.001em;
+  font-weight: 100;
 }
 
 .p5Canvas {
   align-self: center;
+}
+
+#score {
+  color: #404040;
 }
 </style>
