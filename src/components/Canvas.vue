@@ -191,7 +191,7 @@ export default {
       };
 
       p5.mouseClicked = () => {
-        clicked = true;
+        clicked = !clicked;
         // console.log(twoPointerAngles[0]);
         // console.log(a1);
       };
