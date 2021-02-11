@@ -2,16 +2,26 @@
   <div id="canvas" class="info">
     <!-- <div> -->
     <div class="info" style="list-style-type: none">
-      <span id="command">Left Mouse Click:</span> <span id="description">Select Guess</span>
+      <span id="command">Left Mouse Click:</span>
+      <span id="description">Select Guess</span>
       <br />
-      <span id="command">H: </span> <span id="description">Toggle Showing colours</span>
+      <span id="command">H: </span>
+      <span id="description">Toggle Showing colours</span>
       <br />
-      <span id="command">R: </span> <span id="description">Reset Selection</span>
+      <span id="command">R: </span>
+      <span id="description">Reset Selection</span>
       <br />
       <span id="command">Enter: </span> <span id="description">Show Score</span>
       <br />
-      <span id="command">Left Arrow: </span> <span id="description">Next round</span>
+      <span id="command">Left Arrow: </span>
+      <span id="description">Next round</span>
+      <br />
+      <span id="command">C: </span>
+      <span id="description">Switch between card options</span>
     </div>
+    <br />
+
+    <div id="card">{{ cards[selection] }}</div>
     <h1 :id="showScore ? '' : 'score'">Score: {{ score }}</h1>
   </div>
 </template>
@@ -26,6 +36,11 @@ export default {
     return {
       score: 0,
       showScore: false,
+      cards: [
+        "Extreme number 1 Card 1 - Extreme number 2 Card 1",
+        "Wollahs number 1 Card 2 - Wollahs number 2 Card 2",
+      ],
+      selection: 1,
     };
   },
   methods: {},
@@ -38,11 +53,11 @@ export default {
 
       // eslint-disable-next-line no-unused-vars
       let score = 0;
-      const windowHeight = 1000;
-      const windowWidth = 1000;
+      const windowHeight = 900;
+      const windowWidth = 900;
       const PI = Math.PI;
       // Should be between [0.0, 1.0]
-      const arcSize = 0.9;
+      const arcSize = 0.95;
       const radius = windowWidth / 2 - 0.5 * windowWidth * (1 - arcSize);
       const colWidth = 0.04;
       let centreOffset = -(PI * colWidth * 5) / 2;
@@ -174,6 +189,12 @@ export default {
         // h key
         if (p5.keyCode == 72) {
           show = !show;
+        }
+        // c key
+        if (p5.keyCode == 67) {
+          if (!locked) {
+            this.selection = (this.selection + 1) % 2;
+          }
         }
         // Enter key
         if (p5.keyCode == 13) {
@@ -349,7 +370,6 @@ export default {
 
 
 <style>
-
 * {
   background-color: #404040;
   align-self: center;
@@ -358,7 +378,8 @@ export default {
 .info {
   text-align: center;
   color: white;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   letter-spacing: 0.05em;
   font-weight: bold;
 }
@@ -383,5 +404,10 @@ export default {
 
 #score {
   color: #404040;
+}
+
+#card {
+  color: #b8d5e7;
+  font-size: 1.2em;
 }
 </style>
