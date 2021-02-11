@@ -5,15 +5,15 @@
       <span id="command">Left Mouse Click:</span>
       <span id="description">Select Guess</span>
       <br />
+      <span id="command">R: </span>
+      <span id="description">Reset Selection/Guess</span>
+      <br />
       <span id="command">H: </span>
       <span id="description">Toggle Showing colours</span>
       <br />
-      <span id="command">R: </span>
-      <span id="description">Reset Selection</span>
-      <br />
       <span id="command">Enter: </span> <span id="description">Show Score</span>
       <br />
-      <span id="command">Left Arrow: </span>
+      <span id="command">Right Arrow: </span>
       <span id="description">Next round</span>
       <br />
       <span id="command">C: </span>
