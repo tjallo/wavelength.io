@@ -38,8 +38,8 @@ export default {
       score: 0,
       showScore: false,
       cards: [
-        "Extreme number 1 Card 1 - Extreme number 2 Card 1",
-        "Wollahs number 1 Card 2 - Wollahs number 2 Card 2",
+        "Demo Side A",
+        "Demo Side B",
       ],
       selection: 1,
     };
@@ -231,6 +231,7 @@ export default {
           clicked = false;
           this.showScore = false;
           this.score = 0;
+          this.selection = 0;
           this.cards = this.getCard();
           pos1 = p5.random(maxRange[0], maxRange[1]);
           p5.updateAngleArrays();
