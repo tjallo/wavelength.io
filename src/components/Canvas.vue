@@ -40,7 +40,10 @@ export default {
     return {
       score: 0,
       showScore: false,
-      cards: ["Demo Side A", "Demo Side B"],
+      cards: [
+        ["Bad thing Demo Side A", "Good thing Demo Side A"],
+        ["Bad thing Demo Side B", "Good thing Demo Side B"],
+      ],
       selection: 1,
     };
   },
