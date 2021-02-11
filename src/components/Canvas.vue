@@ -21,7 +21,10 @@
     </div>
     <br />
 
-    <div id="card">{{ cards[selection] }}</div>
+    <div id="card">
+      <span id="bad">{{ cards[selection][0] }}</span> -
+      <span id="good">{{ cards[selection][1] }}</span>
+    </div>
     <h1 :id="showScore ? '' : 'score'">Score: {{ score }}</h1>
   </div>
 </template>
@@ -37,10 +40,7 @@ export default {
     return {
       score: 0,
       showScore: false,
-      cards: [
-        "Demo Side A",
-        "Demo Side B",
-      ],
+      cards: ["Demo Side A", "Demo Side B"],
       selection: 1,
     };
   },
@@ -52,9 +52,8 @@ export default {
         this.$store.commit("remove", { arrayEntry: localCard });
         return localCard;
       } else {
-        
-        this.$store.commit("reset")
-        return["Game over","Game over"]
+        this.$store.commit("reset");
+        return ["Game over", "Game over"];
       }
     },
   },
@@ -425,5 +424,13 @@ export default {
 #card {
   color: #b8d5e7;
   font-size: 1.2em;
+}
+
+#bad {
+  color: #ff6961;
+}
+
+#good {
+  color: #77dd77;
 }
 </style>
