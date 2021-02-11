@@ -28,6 +28,7 @@
 
 <script>
 import P5 from "p5"; // Package from npm
+import { sample, isEmpty } from "lodash";
 
 export default {
   name: "App",
@@ -43,7 +44,20 @@ export default {
       selection: 1,
     };
   },
-  methods: {},
+  methods: {
+    getCard() {
+      if (!isEmpty(this.$store.state.cards)) {
+        let allCards = this.$store.state.cards;
+        let localCard = sample(allCards);
+        this.$store.commit("remove", { arrayEntry: localCard });
+        return localCard;
+      } else {
+        
+        this.$store.commit("reset")
+        return["Game over","Game over"]
+      }
+    },
+  },
   mounted() {
     const script = (p5) => {
       let clicked = false;
@@ -217,6 +231,7 @@ export default {
           clicked = false;
           this.showScore = false;
           this.score = 0;
+          this.cards = this.getCard();
           pos1 = p5.random(maxRange[0], maxRange[1]);
           p5.updateAngleArrays();
         }
